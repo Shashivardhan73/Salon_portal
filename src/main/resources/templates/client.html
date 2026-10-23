@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Client account | Bloom Salon</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+<header class="topbar">
+    <a class="wordmark" th:href="@{/client}">Bloom <span>Salon</span></a>
+    <div class="top-actions"><span>Client account</span><form th:action="@{/logout}" method="post"><button class="button-quiet">Sign out</button></form></div>
+</header>
+<main class="container client-container">
+    <section class="page-heading">
+        <div><p class="eyebrow">YOUR SALON PROFILE</p><h1>Hi, <span th:text="${client.name}">there</span></h1><p class="muted">Your profile and feedback are visible to the salon owner.</p></div>
+    </section>
+    <p class="notice" th:if="${message}" th:text="${message}"></p>
+    <p class="notice error" th:if="${error}" th:text="${error}"></p>
+    <section class="panel profile-grid">
+        <div><span class="field-label">Email</span><strong th:text="${client.email}">email@example.com</strong></div>
+        <div><span class="field-label">Phone</span><strong th:text="${client.phone}">555-0100</strong></div>
+    </section>
+    <section class="panel">
+        <div class="section-heading"><div><p class="eyebrow">BOOK A VISIT</p><h2>Make an appointment</h2></div></div>
+        <form th:action="@{/client/appointments}" method="post" class="stack">
+            <label>Service<input name="service" maxlength="120" required placeholder="For example, haircut or styling"></label>
+            <div class="form-grid">
+                <label>Date<input name="date" type="date" th:attr="min=${today}" required></label>
+                <label>Time<input name="time" type="time" required></label>
+            </div>
+            <div><button type="submit">Book appointment</button></div>
+        </form>
+    </section>
+    <section class="panel">
+        <div class="section-heading"><div><p class="eyebrow">YOUR VISITS</p><h2>Your appointments</h2></div></div>
+        <div class="feedback-list" th:if="${!appointments.isEmpty()}">
+            <article class="feedback-card" th:each="item : ${appointments}">
+                <div class="feedback-meta">
+                    <strong th:text="${item.service}">Service</strong>
+                    <time th:text="${#temporals.format(item.appointmentAt, 'MMM d, yyyy ''at'' h:mm a')}">Date and time</time>
+                </div>
+            </article>
+        </div>
+        <p class="empty" th:if="${appointments.isEmpty()}">You haven't booked an appointment yet.</p>
+    </section>
+    <section class="panel">
+        <div class="section-heading"><div><p class="eyebrow">YOUR EXPERIENCE</p><h2>Leave feedback</h2></div></div>
+        <form th:action="@{/client/feedback}" method="post" class="stack">
+            <label>Rating
+                <select name="rating" required>
+                    <option value="">Choose a rating</option>
+                    <option value="5">5 - Excellent</option><option value="4">4 - Very good</option>
+                    <option value="3">3 - Good</option><option value="2">2 - Could be better</option>
+                    <option value="1">1 - Needs improvement</option>
+                </select>
+            </label>
+            <label>Your feedback<textarea name="message" rows="4" maxlength="1000" required placeholder="Tell us about your visit..."></textarea></label>
+            <div><button type="submit">Send feedback</button></div>
+        </form>
+    </section>
+    <section class="panel">
+        <div class="section-heading"><div><p class="eyebrow">FEEDBACK HISTORY</p><h2>Your previous feedback</h2></div></div>
+        <div class="feedback-list" th:if="${!feedback.isEmpty()}">
+            <article class="feedback-card" th:each="item : ${feedback}">
+                <div class="feedback-meta"><strong th:text="${item.rating} + ' / 5 stars'">5 / 5 stars</strong><time th:text="${item.submittedAt}">Date</time></div>
+                <p th:text="${item.message}">Feedback text</p>
+            </article>
+        </div>
+        <p class="empty" th:if="${feedback.isEmpty()}">You haven't sent feedback yet.</p>
+    </section>
+</main>
+</body>
+</html>

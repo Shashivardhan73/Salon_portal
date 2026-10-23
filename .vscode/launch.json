@@ -1,0 +1,26 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Attach to Chrome",
+            "port": 9222,
+            "request": "attach",
+            "type": "chrome",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "java",
+            "request": "launch",
+            "name": "Run Bloom Salon Portal",
+            "mainClass": "com.salon.SalonPortalApplication",
+            "vmArgs": "-Xms128m -Xmx512m"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Open Bloom Salon Portal",
+            "url": "http://localhost:8080/login",
+            "webRoot": "${workspaceFolder}"
+        }
+    ]
+}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign in | Bloom Salon</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body class="login-page">
+<main class="login-card">
+    <div class="brand-mark">B</div>
+    <p class="eyebrow">BLOOM SALON</p>
+    <h1>Welcome back</h1>
+    <p class="muted">Sign in to your salon account.</p>
+    <p class="notice error" th:if="${param.error}">Invalid email or password.</p>
+    <p class="notice" th:if="${param.logout}">You have signed out.</p>
+    <p class="notice" th:if="${message}" th:text="${message}"></p>
+    <form th:action="@{/login}" method="post" class="stack">
+        <label>Email or username
+            <input type="text" name="username" autocomplete="username" required autofocus>
+        </label>
+        <label>Password
+            <input type="password" name="password" autocomplete="current-password" required>
+        </label>
+        <button type="submit">Sign in</button>
+    </form>
+    <p class="register-prompt">New to Bloom Salon? <a th:href="@{/register}">Create an account</a></p>
+    <p class="demo-note">Demo owner: <strong>owner</strong> / <strong>owner123</strong></p>
+    <p class="demo-note">Demo client: <strong>alex@example.com</strong> / <strong>client123</strong></p>
+</main>
+</body>
+</html>

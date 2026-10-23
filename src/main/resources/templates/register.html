@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create account | Bloom Salon</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body class="login-page">
+<main class="login-card">
+    <div class="brand-mark">B</div>
+    <p class="eyebrow">BLOOM SALON</p>
+    <h1>Create your account</h1>
+    <p class="muted">Register as a client to book appointments and share feedback.</p>
+    <p class="notice error" th:if="${error}" th:text="${error}"></p>
+    <form th:action="@{/register}" method="post" class="stack">
+        <label>Full name
+            <input type="text" name="name" maxlength="120" autocomplete="name" required autofocus>
+        </label>
+        <label>Email address
+            <input type="email" name="email" maxlength="180" autocomplete="email" required>
+        </label>
+        <label>Phone number
+            <input type="tel" name="phone" maxlength="40" autocomplete="tel" required>
+        </label>
+        <label>Password
+            <input type="password" name="password" minlength="8" maxlength="72" autocomplete="new-password" required>
+        </label>
+        <label>Confirm password
+            <input type="password" name="confirmPassword" minlength="8" maxlength="72" autocomplete="new-password" required>
+        </label>
+        <button type="submit">Register</button>
+    </form>
+    <p class="register-prompt">Already have an account? <a th:href="@{/login}">Sign in</a></p>
+</main>
+</body>
+</html>

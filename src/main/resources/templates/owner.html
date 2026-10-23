@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Owner dashboard | Bloom Salon</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+<header class="topbar">
+    <a class="wordmark" th:href="@{/owner}">Bloom <span>Salon</span></a>
+    <div class="top-actions"><span>Owner dashboard</span><form th:action="@{/logout}" method="post"><button class="button-quiet">Sign out</button></form></div>
+</header>
+<main class="container">
+    <section class="page-heading">
+        <div><p class="eyebrow">BUSINESS OVERVIEW</p><h1>Your salon, at a glance</h1><p class="muted">Manage client profiles and keep up with their feedback.</p></div>
+        <div class="stat-card"><span>Total clients</span><strong th:text="${clients.size()}">0</strong></div>
+    </section>
+    <p class="notice" th:if="${message}" th:text="${message}"></p>
+    <p class="notice error" th:if="${error}" th:text="${error}"></p>
+    <section class="panel">
+        <div class="section-heading"><div><p class="eyebrow">SALON SCHEDULE</p><h2>Upcoming appointments</h2></div></div>
+        <div class="appointment-days" th:if="${!appointmentsByDay.isEmpty()}">
+            <section class="appointment-day" th:each="day : ${appointmentsByDay}">
+                <h3 th:text="${#temporals.format(day.key, 'EEEE, MMMM d, yyyy')}">Appointment date</h3>
+                <div class="feedback-list">
+                    <article class="feedback-card" th:each="item : ${day.value}">
+                        <div class="feedback-meta">
+                            <strong th:text="${#temporals.format(item.appointmentAt, 'h:mm a')}">Appointment time</strong>
+                            <span th:text="${item.service}">Service</span>
+                        </div>
+                        <p><strong th:text="${item.client.name}">Client name</strong>
+                            <span> · </span><span th:text="${item.client.phone}">Client phone</span></p>
+                    </article>
+                </div>
+            </section>
+        </div>
+        <p class="empty" th:if="${appointmentsByDay.isEmpty()}">No upcoming appointments have been booked.</p>
+    </section>
+    <section class="panel">
+        <div class="section-heading"><div><p class="eyebrow">CLIENTS</p><h2>Client accounts</h2></div></div>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Name</th><th>Email / login</th><th>Phone</th></tr></thead>
+                <tbody>
+                <tr th:each="client : ${clients}">
+                    <td th:text="${client.name}">Client name</td>
+                    <td th:text="${client.email}">client@example.com</td>
+                    <td th:text="${client.phone}">555-0100</td>
+                </tr>
+                <tr th:if="${clients.isEmpty()}"><td colspan="3" class="empty">No clients yet.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <section class="panel">
+        <div class="section-heading"><div><p class="eyebrow">NEW PROFILE</p><h2>Add a client</h2></div></div>
+        <form th:action="@{/owner/clients}" method="post" class="form-grid">
+            <label>Full name<input name="name" maxlength="120" required></label>
+            <label>Email (also used to sign in)<input name="email" type="email" maxlength="180" required></label>
+            <label>Phone number<input name="phone" maxlength="40" required></label>
+            <label>Initial password<input name="password" type="password" minlength="8" required></label>
+            <div class="form-submit"><button type="submit">Create client account</button><span class="muted">Use at least 8 characters.</span></div>
+        </form>
+    </section>
+    <section class="panel">
+        <div class="section-heading"><div><p class="eyebrow">WHAT CLIENTS SAY</p><h2>Recent feedback</h2></div></div>
+        <div class="feedback-list" th:if="${!feedback.isEmpty()}">
+            <article class="feedback-card" th:each="item : ${feedback}">
+                <div class="feedback-meta"><strong th:text="${item.client.name}">Client name</strong><span th:text="${item.rating} + ' / 5 stars'">5 / 5 stars</span></div>
+                <p th:text="${item.message}">Feedback text</p>
+                <time th:text="${item.submittedAt}">Date</time>
+            </article>
+        </div>
+        <p class="empty" th:if="${feedback.isEmpty()}">No feedback has been submitted yet.</p>
+    </section>
+</main>
+</body>
+</html>
